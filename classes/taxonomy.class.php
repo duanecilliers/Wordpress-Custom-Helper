@@ -9,7 +9,7 @@ if( ! defined( 'ABSPATH' ) ) exit;
  * @since 	0.2
  *
  */
-class Cuztom_Taxonomy
+class Custom_Taxonomy
 {
 	var $name;
 	var $title;
@@ -17,7 +17,7 @@ class Cuztom_Taxonomy
 	var $labels;
 	var $args;
 	var $post_type;
-	
+
 	/**
 	 * Constructs the class with important vars and method calls
 	 * If the taxonomy exists, it will be attached to the post type
@@ -39,24 +39,24 @@ class Cuztom_Taxonomy
 
 			if( is_array( $name ) )
 			{
-				$this->name		= Cuztom::uglify( $name[0] );
-				$this->title	= Cuztom::beautify( $name[0] );
-				$this->plural 	= Cuztom::beautify( $name[1] );
+				$this->name		= Custom_Util::uglify( $name[0] );
+				$this->title	= Custom_Util::beautify( $name[0] );
+				$this->plural 	= Custom_Util::beautify( $name[1] );
 			}
 			else
 			{
-				$this->name		= Cuztom::uglify( $name );
-				$this->title	= Cuztom::beautify( $name );
-				$this->plural 	= Cuztom::pluralize( Cuztom::beautify( $name ) );
+				$this->name		= Custom_Util::uglify( $name );
+				$this->title	= Custom_Util::beautify( $name );
+				$this->plural 	= Custom_Util::pluralize( Custom_Util::beautify( $name ) );
 			}
 
 			$this->labels	= $labels;
 			$this->args		= $args;
-            
+
             if( ! taxonomy_exists( $this->name ) )
 			{
-				if ( $is_reserved_term = Cuztom::is_reserved_term( $this->name ) )
-	            	new Cuztom_Notice( $is_reserved_term->get_error_message(), 'error' );
+				if ( $is_reserved_term = Custom_Util::is_reserved_term( $this->name ) )
+	            	new Custom_Notice( $is_reserved_term->get_error_message(), 'error' );
 				else
 					add_action( 'init', array( &$this, 'register_taxonomy' ) );
 			}
@@ -76,15 +76,15 @@ class Cuztom_Taxonomy
 				if( isset( $args['admin_column_sortable'] ) && $args['admin_column_sortable'] )
 					add_action( 'manage_edit-' . $this->post_type . '_sortable_columns', array( &$this, 'add_sortable_column' ), 10, 2 );
 
-				if( isset( $args['admin_column_filter'] ) && $args['admin_column_filter'] ) 
+				if( isset( $args['admin_column_filter'] ) && $args['admin_column_filter'] )
 				{
-					add_action( 'restrict_manage_posts', array( &$this, '_post_filter' ) ); 
+					add_action( 'restrict_manage_posts', array( &$this, '_post_filter' ) );
 					add_filter( 'parse_query', array( &$this, '_post_filter_query') );
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Registers the custom taxonomy with the given arguments
 	 *
@@ -97,17 +97,17 @@ class Cuztom_Taxonomy
 		// Default labels, overwrite them with the given labels.
 		$labels = array_merge(
 			array(
-				'name' 					=> sprintf( _x( '%s', 'taxonomy general name', 'cuztom' ), $this->plural ),
-				'singular_name' 		=> sprintf( _x( '%s', 'taxonomy singular name', 'cuztom' ), $this->title ),
-			    'search_items' 			=> sprintf( __( 'Search %s', 'cuztom' ), $this->plural ),
-			    'all_items' 			=> sprintf( __( 'All %s', 'cuztom' ), $this->plural ),
-			    'parent_item' 			=> sprintf( __( 'Parent %s', 'cuztom' ), $this->title ),
-			    'parent_item_colon' 	=> sprintf( __( 'Parent %s:', 'cuztom' ), $this->title ),
-			    'edit_item' 			=> sprintf( __( 'Edit %s', 'cuztom' ), $this->title ), 
-			    'update_item' 			=> sprintf( __( 'Update %s', 'cuztom' ), $this->title ),
-			    'add_new_item' 			=> sprintf( __( 'Add New %s', 'cuztom' ), $this->title ),
-			    'new_item_name' 		=> sprintf( __( 'New %s Name', 'cuztom' ), $this->title ),
-			    'menu_name' 			=> sprintf( __( '%s', 'cuztom' ), $this->plural )
+				'name' 					=> sprintf( _x( '%s', 'taxonomy general name', 'custom' ), $this->plural ),
+				'singular_name' 		=> sprintf( _x( '%s', 'taxonomy singular name', 'custom' ), $this->title ),
+			    'search_items' 			=> sprintf( __( 'Search %s', 'custom' ), $this->plural ),
+			    'all_items' 			=> sprintf( __( 'All %s', 'custom' ), $this->plural ),
+			    'parent_item' 			=> sprintf( __( 'Parent %s', 'custom' ), $this->title ),
+			    'parent_item_colon' 	=> sprintf( __( 'Parent %s:', 'custom' ), $this->title ),
+			    'edit_item' 			=> sprintf( __( 'Edit %s', 'custom' ), $this->title ),
+			    'update_item' 			=> sprintf( __( 'Update %s', 'custom' ), $this->title ),
+			    'add_new_item' 			=> sprintf( __( 'Add New %s', 'custom' ), $this->title ),
+			    'new_item_name' 		=> sprintf( __( 'New %s Name', 'custom' ), $this->title ),
+			    'menu_name' 			=> sprintf( __( '%s', 'custom' ), $this->plural )
 			),
 			$this->labels
 		);
@@ -115,7 +115,7 @@ class Cuztom_Taxonomy
 		// Default arguments, overwitten with the given arguments
 		$args = array_merge(
 			array(
-				'label'					=> sprintf( __( '%s', 'cuztom' ), $this->plural ),
+				'label'					=> sprintf( __( '%s', 'custom' ), $this->plural ),
 				'labels'				=> $labels,
 				'hierarchical' 			=> true,
 				'public' 				=> true,
@@ -126,10 +126,10 @@ class Cuztom_Taxonomy
 			),
 			$this->args
 		);
-		
+
 		register_taxonomy( $this->name, $this->post_type, $args );
 	}
-	
+
 	/**
 	 * Used to attach the existing taxonomy to the post type
 	 *
@@ -153,7 +153,7 @@ class Cuztom_Taxonomy
 	 */
 	function add_term_meta( $data = array() )
 	{
-		$term_meta = new Cuztom_Term_Meta( $this->name, $data );
+		$term_meta = new Custom_Term_Meta( $this->name, $data );
 
 		return $this;
 	}
@@ -173,11 +173,11 @@ class Cuztom_Taxonomy
 		unset( $columns['date'] );
 
 		$columns[$this->name] = $this->title;
-		$columns['date'] = __( 'Date', 'cuztom' );
-		
+		$columns['date'] = __( 'Date', 'custom' );
+
 		return $columns;
 	}
-	
+
 	/**
 	 * Used to add the column content to the column head
 	 *
@@ -191,7 +191,7 @@ class Cuztom_Taxonomy
 	 */
 	function add_column_content( $column, $post_id )
 	{
-		if ( $column === $this->name ) 
+		if ( $column === $this->name )
 		{
 			$terms = wp_get_post_terms( $post_id, $this->name, array( 'fields' => 'names' ) );
 
@@ -201,13 +201,13 @@ class Cuztom_Taxonomy
 
 	/**
 	 * Used to make all columns sortable
-	 * 
+	 *
 	 * @param 	array 			$columns
 	 * @return  array
 	 *
 	 * @author  Gijs Jorissen
 	 * @since   1.6
-	 * 
+	 *
 	 */
 	function add_sortable_column( $columns )
 	{
@@ -218,19 +218,19 @@ class Cuztom_Taxonomy
 
 	/**
 	 * Adds a filter to the post table filters
-	 * 
+	 *
 	 * @author 	Gijs Jorissen
 	 * @since 	1.6
-	 * 
+	 *
 	 */
-	function _post_filter() 
+	function _post_filter()
 	{
 		global $typenow, $wp_query;
 
-		if( $typenow == $this->post_type ) 
+		if( $typenow == $this->post_type )
 		{
 			wp_dropdown_categories( array(
-				'show_option_all'	=> sprintf( __( 'Show all %s', 'cuztom' ), $this->plural ),
+				'show_option_all'	=> sprintf( __( 'Show all %s', 'custom' ), $this->plural ),
 				'taxonomy'       	=> $this->name,
 				'name'            	=> $this->name,
 				'orderby'         	=> 'name',
@@ -244,19 +244,19 @@ class Cuztom_Taxonomy
 
 	/**
 	 * Applies the selected filter to the query
-	 * 
+	 *
 	 * @param 	object 			$query
 	 *
 	 * @author  Gijs Jorissen
 	 * @since  	1.6
-	 * 
+	 *
 	 */
-	function _post_filter_query( $query ) 
+	function _post_filter_query( $query )
 	{
     	global $pagenow;
     	$vars = &$query->query_vars;
 
-		if( $pagenow == 'edit.php' && isset( $vars[$this->name] ) && is_numeric( $vars[$this->name] ) && $vars[$this->name] ) 
+		if( $pagenow == 'edit.php' && isset( $vars[$this->name] ) && is_numeric( $vars[$this->name] ) && $vars[$this->name] )
     	{
     		$term = get_term_by( 'id', $vars[$this->name], $this->name );
         	$vars[$this->name] = $term->slug;

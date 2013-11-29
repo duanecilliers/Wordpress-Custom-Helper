@@ -8,20 +8,20 @@ if( ! defined( 'ABSPATH' ) ) exit;
  * @author  Gijs Jorissen
  * @since  	2.3
  */
-class Cuztom_Notice
+class Custom_Notice
 {
 	var $notice;
 	var $type;
 
 	/**
 	 * Constructor
-	 * 
-	 * @param  	string 	$notice 
+	 *
+	 * @param  	string 	$notice
 	 * @param 	string 	$type
 	 *
 	 * @author  Gijs Jorissen
 	 * @since   2.3
-	 * 
+	 *
 	 */
 	function __construct( $notice, $type = 'updated' )
 	{
@@ -36,7 +36,7 @@ class Cuztom_Notice
 	 *
 	 * @author 	Gijs Jorissen
 	 * @since   2.3
-	 * 
+	 *
 	 */
 	function add_admin_notice()
 	{

@@ -9,10 +9,10 @@ if( ! defined( 'ABSPATH' ) ) exit;
  * @since 	0.5
  *
  */
-class Cuztom_Sidebar
+class Custom_Sidebar
 {
 	var $args;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -34,10 +34,10 @@ class Cuztom_Sidebar
 			'before_title'		=> isset( $name['before_title'] ) 	? $name['before_title'] 	: '',
 			'after_title'		=> isset( $name['after_title'] ) 	? $name['after_title'] 		: '',
 		);
-		
+
 		add_action( 'widgets_init', array( $this, 'register_sidebar' ) );
 	}
-	
+
 	/**
 	 * Register the Sidebar
 	 *
