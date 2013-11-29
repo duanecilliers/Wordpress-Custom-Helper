@@ -73,10 +73,10 @@ To add a submenu page to another page.
 	);
 
 ## Advanced usage
-See the <a href="https://github.com/duanecilliers/Wordpress-Cuztom-Helper/wiki">wiki</a> for the full and advanced guides.
+See the <a href="https://github.com/duanecilliers/Wordpress-Custom-Helper/wiki">wiki</a> for the full and advanced guides.
 
 ## Changelog
-You can see the full changelog <a href="https://github.com/duanecilliers/Wordpress-Cuztom-Helper/wiki/Changelog">here</a>.
+You can see the full changelog <a href="https://github.com/duanecilliers/Wordpress-Custom-Helper/wiki/Changelog">here</a>.
 
 ###3.0.0
 * Strip Metabox functionality and related files
